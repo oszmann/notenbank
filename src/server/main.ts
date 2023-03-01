@@ -4,7 +4,13 @@ import path from "path";
 import { DataSource } from "typeorm";
 import config from "../../config.json";
 import { toNumber } from "./util";
-import { init } from "./db";
+import { init, letsTryOutTheEntities } from "./db";
+import { Piece } from "./entities/piece";
+import { Publisher } from "./entities/publisher";
+import { Genre } from "./entities/genre";
+import { Composer } from "./entities/composer";
+import { Person } from "./entities/person";
+import { Arranger } from "./entities/arranger";
 
 console.log("Hello World!");
 
@@ -23,6 +29,12 @@ app.use("/fa", express.static(path.join(process.cwd(), "node_modules/@fortawesom
 // Paths
 app.get("/api/", async (req: Request, res: Response) => {
     console.log(req.url);
+    res.json({ response: "hi" });
+});
+
+app.get("/letsgo", async (req: Request, res: Response) => {
+    console.log(req.url);
+    letsTryOutTheEntities(AppDataSource);
     res.json({ response: "hi" });
 });
 
@@ -47,7 +59,7 @@ const AppDataSource = new DataSource({
     username: config.username,
     password: config.password,
     database: config.database,
-    entities: [],
+    entities: [Piece, Publisher, Genre, Person, Composer, Arranger],
     synchronize: true,
     logging: false,
 });
